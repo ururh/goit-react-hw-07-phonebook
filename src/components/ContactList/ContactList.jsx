@@ -1,15 +1,10 @@
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { remove } from '../../redux/sliceContact'; 
+import { delContactsThunk } from 'redux/contactsThunk';
 import { ButtonDelete, ItemContact, List } from './ContactList.module';
 
 export const ContactList = ({ listContact }) => {
   const dispatch = useDispatch();
-
-  const handleRemove = (id) => {
-    dispatch(remove(id));
-  };
-
   return (
     <List>
       {listContact.map((contact) => (
@@ -17,7 +12,7 @@ export const ContactList = ({ listContact }) => {
           {contact.name}: {contact.number}
           <ButtonDelete
             type="button"
-            onClick={() => handleRemove(contact.id)}
+            onClick={() => dispatch(delContactsThunk(contact.id))}
           >
             Delete
           </ButtonDelete>

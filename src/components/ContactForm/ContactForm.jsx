@@ -1,13 +1,17 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { add } from 'redux/sliceContact';
+import { addContactsThunk, getContactsThunk } from 'redux/contactsThunk';
 import { AddButton, FormInfo, Input, LabelText } from './ContactForm.module';
+
 
 export const ContactForm = () => {
   const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
+  useEffect(() => {
+    dispatch(getContactsThunk());
+  }, [dispatch]);
   const handleChange = evt => {
     const { name, value } = evt.target;
     name === 'name' ? setName(value) : setNumber(value);
@@ -16,20 +20,26 @@ export const ContactForm = () => {
     setName('');
     setNumber('');
   };
-  const contacts = useSelector(state => state.contacts);
+  const contacts = useSelector(state => state.contacts.items);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const existingContact = contacts.find(
-      (value) => value.name.toLowerCase() === name.toLowerCase()
-    );
-    if (existingContact) {
-      alert(`${name} is already in contacts`);
-    } else {
-      dispatch(add({ name, number }));
-    }
-    reset();
-  };
+ const handleSubmit= e => {
+        const notifly = () => alert(`${name} is alredy in contacts`);
+        const contact = {
+          name: name,
+          phone: number,
+        };
+        e.preventDefault();
+        if (
+          contacts.some(
+            value => value.name.toLocaleLowerCase() === name.toLocaleLowerCase()
+          )
+        ) {
+          notifly();
+        } else {
+          dispatch(addContactsThunk(contact));
+          reset();
+        }
+      }
 
   return (
     <FormInfo onSubmit={handleSubmit}>
