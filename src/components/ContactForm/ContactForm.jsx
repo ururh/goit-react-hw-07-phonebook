@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContactsThunk, getContactsThunk } from 'redux/contactsThunk';
+import { addContactsThunk } from 'redux/contactsThunk';
 import { AddButton, FormInfo, Input, LabelText } from './ContactForm.module';
 
 export const ContactForm = () => {
@@ -35,10 +35,6 @@ export const ContactForm = () => {
       reset();
     }
   };
-
-  useEffect(() => {
-    dispatch(getContactsThunk());
-  }, []);
 
   return (
     <FormInfo onSubmit={handleSubmit}>
