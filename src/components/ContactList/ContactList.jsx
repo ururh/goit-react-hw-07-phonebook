@@ -5,10 +5,12 @@ import { ButtonDelete, ItemContact, List } from './ContactList.module';
 import { useEffect } from 'react';
 
 export const ContactList = ({ listContact }) => {
-    useEffect(() => {
-    dispatch(getContactsThunk());
-  }, []);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getContactsThunk());
+  }, [dispatch]);
+
   return (
     <List>
       {listContact.map((contact) => (
